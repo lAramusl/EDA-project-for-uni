@@ -241,46 +241,110 @@ module lab_top
     //
     //------------------------------------------------------------------------
 
-    always_ff @ (posedge clk or posedge rst)
-        if (rst)
-            abcdefgh <= 8'b00000000;
-        else
-            case (t_note)
-            C  : abcdefgh <= 8'b10011100;  // C   // abcdefgh
-            Cs : abcdefgh <= 8'b10011101;  // C#
-            D  : abcdefgh <= 8'b01111010;  // D   //   --a--
-            Ds : abcdefgh <= 8'b01111011;  // D#  //  |     |
-            E  : abcdefgh <= 8'b10011110;  // E   //  f     b
-            F  : abcdefgh <= 8'b10001110;  // F   //  |     |
-            Fs : abcdefgh <= 8'b10001111;  // F#  //   --g--
-            G  : abcdefgh <= 8'b10111100;  // G   //  |     |
-            Gs : abcdefgh <= 8'b10111101;  // G#  //  e     c
-            A  : abcdefgh <= 8'b11101110;  // A   //  |     |
-            As : abcdefgh <= 8'b11101111;  // A#  //   --d--  h
-            B  : abcdefgh <= 8'b00111110;  // B
-            default : abcdefgh <= 8'b00000010;
-            endcase
+    // always_ff @ (posedge clk or posedge rst)
+    //     if (rst)
+    //         abcdefgh <= 8'b00000000;
+    //     else
+    //         case (t_note)
+    //         C  : abcdefgh <= 8'b10011100;  // C   // abcdefgh
+    //         Cs : abcdefgh <= 8'b10011101;  // C#
+    //         D  : abcdefgh <= 8'b01111010;  // D   //   --a--
+    //         Ds : abcdefgh <= 8'b01111011;  // D#  //  |     |
+    //         E  : abcdefgh <= 8'b10011110;  // E   //  f     b
+    //         F  : abcdefgh <= 8'b10001110;  // F   //  |     |
+    //         Fs : abcdefgh <= 8'b10001111;  // F#  //   --g--
+    //         G  : abcdefgh <= 8'b10111100;  // G   //  |     |
+    //         Gs : abcdefgh <= 8'b10111101;  // G#  //  e     c
+    //         A  : abcdefgh <= 8'b11101110;  // A   //  |     |
+    //         As : abcdefgh <= 8'b11101111;  // A#  //   --d--  h
+    //         B  : abcdefgh <= 8'b00111110;  // B
+    //         default : abcdefgh <= 8'b00000010;
+    //         endcase
 
     assign digit = w_digit' (1);
+
+// OUR CODE STARTS HERE -----------------------------=====================================<<<<<<<<<<<<<<<<<<<<<<<<
 
     typedef struct packed {
         logic [9:0] x;
         logic [8:0] y;
-        logic [w_note - 1:0] 
+        logic [w_note - 1:0] note_name;
     } NoteCoord_t;
 
     localparam int note_count = 62;
 
-    NoteData_t notes [NUM_NOTES] =
+    NoteData_t notes [note_count] =
     '{
-        '{x:  50, y: 100, mask: C },
-        '{x:  80, y:  95, mask: D },
-        '{x: 110, y:  90, mask: E },
-        '{x: 140, y:  95, mask: D },
-        '{x: 170, y: 100, mask: C },
-        '{x: 200, y: 105, mask: D },
-        '{x: 230, y: 110, mask: E },
-        '{x: 260, y: 115, mask: F }
+        '{x:  50, y: 100, note_name: E },
+        '{x:  80, y:  95, note_name: G },
+        '{x: 110, y:  90, note_name: D },
+        '{x: 140, y:  95, note_name: C },
+        '{x: 170, y: 100, note_name: D },
+        '{x: 200, y: 105, note_name: E },
+        '{x: 230, y: 110, note_name: G },
+        '{x: 260, y: 115, note_name: D },
+
+        '{x:  50, y: 100, note_name: E },
+        '{x:  80, y:  95, note_name: G },
+        '{x: 110, y:  90, note_name: D },
+        '{x: 140, y:  95, note_name: C },
+        '{x: 260, y: 115, note_name: G },
+        '{x: 260, y: 115, note_name: F },
+        '{x: 260, y: 115, note_name: E },
+        '{x: 260, y: 115, note_name: D },
+
+        '{x:  50, y: 100, note_name: E },
+        '{x:  80, y:  95, note_name: G },
+        '{x: 110, y:  90, note_name: D },
+        '{x: 140, y:  95, note_name: C },
+        '{x: 170, y: 100, note_name: D },
+        '{x: 200, y: 105, note_name: E },
+        '{x: 230, y: 110, note_name: G },
+        '{x: 260, y: 115, note_name: D },
+
+        '{x:  50, y: 100, note_name: E },
+        '{x:  80, y:  95, note_name: G },
+        '{x: 110, y:  90, note_name: D },
+        '{x: 140, y:  95, note_name: C },
+        '{x: 260, y: 115, note_name: G },
+
+        '{x: 260, y: 115, note_name: G },
+        '{x: 260, y: 115, note_name: F },
+        '{x: 260, y: 115, note_name: E },
+        '{x: 260, y: 115, note_name: F },
+        '{x: 260, y: 115, note_name: E },
+        '{x: 260, y: 115, note_name: C },
+
+        '{x: 260, y: 115, note_name: F },
+        '{x: 260, y: 115, note_name: E },
+        '{x: 260, y: 115, note_name: D },
+        '{x: 260, y: 115, note_name: E },
+        '{x: 260, y: 115, note_name: D },
+        '{x: 260, y: 115, note_name: A },
+
+        '{x: 260, y: 115, note_name: G },
+        '{x: 260, y: 115, note_name: F },
+        '{x: 260, y: 115, note_name: E },
+        '{x: 260, y: 115, note_name: F },
+        '{x: 260, y: 115, note_name: E },
+        '{x: 260, y: 115, note_name: C },
+        '{x: 260, y: 115, note_name: F },
+        '{x: 260, y: 115, note_name: C },
+
+        '{x:  50, y: 100, note_name: E },
+        '{x:  80, y:  95, note_name: G },
+        '{x: 110, y:  90, note_name: D },
+        '{x: 140, y:  95, note_name: C },
+        '{x: 170, y: 100, note_name: D },
+        '{x: 200, y: 105, note_name: E },
+        '{x: 230, y: 110, note_name: G },
+        '{x: 260, y: 115, note_name: D },
+
+        '{x:  50, y: 100, note_name: E },
+        '{x:  80, y:  95, note_name: G },
+        '{x: 110, y:  90, note_name: D },
+        '{x: 140, y:  95, note_name: C },
+        '{x: 260, y: 115, note_name: G }
     };
 
 endmodule
