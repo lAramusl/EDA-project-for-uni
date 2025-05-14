@@ -269,85 +269,85 @@ module lab_top
         logic [9:0] note_x;
         logic [8:0] note_y;
         logic [w_note - 1:0] note_name;
-    } NoteCoord_t;
+    } NoteData_t;
 
     localparam int note_count = 62;
 
 
-    // // NoteData_t notes [note_count] =
-    // // '{
-    // //     //8
-    // //     '{x:  40, y: 100, note_name: E },
-    // //     '{x: 120, y:  95, note_name: G },
-    // //     '{x: 200, y:  90, note_name: D },
-    // //     '{x: 280, y:  95, note_name: C },
-    // //     '{x: 360, y: 100, note_name: D },
-    // //     '{x: 440, y: 105, note_name: E },
-    // //     '{x: 520, y: 110, note_name: G },
-    // //     '{x: 600, y: 115, note_name: D },
-    // //     //8
-    // //     '{x:  40, y: 100, note_name: E },
-    // //     '{x: 120, y:  95, note_name: G },
-    // //     '{x: 200, y:  90, note_name: D },
-    // //     '{x: 280, y:  95, note_name: C },
-    // //     '{x: 360, y: 115, note_name: G },
-    // //     '{x: 440, y: 115, note_name: F },
-    // //     '{x: 520, y: 115, note_name: E },
-    // //     '{x: 600, y: 115, note_name: D },
-    // //     //8
-    // //     '{x:  40, y: 100, note_name: E },
-    // //     '{x: 120, y:  95, note_name: G },
-    // //     '{x: 200, y:  90, note_name: D },
-    // //     '{x: 280, y:  95, note_name: C },
-    // //     '{x: 360, y: 100, note_name: D },
-    // //     '{x: 440, y: 105, note_name: E },
-    // //     '{x: 520, y: 110, note_name: G },
-    // //     '{x: 600, y: 115, note_name: D },
-    // //     //5
-    // //     '{x:  40, y: 100, note_name: E },
-    // //     '{x: 120, y:  95, note_name: G },
-    // //     '{x: 200, y:  90, note_name: D },
-    // //     '{x: 280, y:  95, note_name: C },
-    // //     '{x: 360, y: 115, note_name: G },
-
-    // //     '{x: 260, y: 115, note_name: G },
-    // //     '{x: 260, y: 115, note_name: F },
-    // //     '{x: 260, y: 115, note_name: E },
-    // //     '{x: 260, y: 115, note_name: F },
-    // //     '{x: 260, y: 115, note_name: E },
-    // //     '{x: 260, y: 115, note_name: C },
-
-    // //     '{x: 260, y: 115, note_name: F },
-    // //     '{x: 260, y: 115, note_name: E },
-    // //     '{x: 260, y: 115, note_name: D },
-    // //     '{x: 260, y: 115, note_name: E },
-    // //     '{x: 260, y: 115, note_name: D },
-    // //     '{x: 260, y: 115, note_name: A },
-
-    // //     '{x: 260, y: 115, note_name: G },
-    // //     '{x: 260, y: 115, note_name: F },
-    // //     '{x: 260, y: 115, note_name: E },
-    // //     '{x: 260, y: 115, note_name: F },
-    // //     '{x: 260, y: 115, note_name: E },
-    // //     '{x: 260, y: 115, note_name: C },
-    // //     '{x: 260, y: 115, note_name: F },
-    // //     '{x: 260, y: 115, note_name: C },
-
-    // //     '{x:  50, y: 100, note_name: E },
-    // //     '{x:  80, y:  95, note_name: G },
-    // //     '{x: 110, y:  90, note_name: D },
-    // //     '{x: 140, y:  95, note_name: C },
-    // //     '{x: 170, y: 100, note_name: D },
-    // //     '{x: 200, y: 105, note_name: E },
-    // //     '{x: 230, y: 110, note_name: G },
-    // //     '{x: 260, y: 115, note_name: D },
-
-    // //     '{x:  50, y: 100, note_name: E },
-    // //     '{x:  80, y:  95, note_name: G },
-    // //     '{x: 110, y:  90, note_name: D },
-    // //     '{x: 140, y:  95, note_name: C },
-    // //     '{x: 260, y: 115, note_name: G }
-    // // };
+    NoteData_t notes [note_count] =
+    '{
+        //8
+        '{note_x:  40, note_y: 100, note_name: E },
+        '{note_x: 120, note_y:  95, note_name: G },
+        '{note_x: 200, note_y:  90, note_name: D },
+        '{note_x: 280, note_y:  95, note_name: C },
+        '{note_x: 360, note_y: 100, note_name: D },
+        '{note_x: 440, note_y: 105, note_name: E },
+        '{note_x: 520, note_y: 110, note_name: G },
+        '{note_x: 600, note_y: 115, note_name: D },
+        //8
+        '{note_x:  40, note_y: 100, note_name: E },
+        '{note_x: 120, note_y:  95, note_name: G },
+        '{note_x: 200, note_y:  90, note_name: D },
+        '{note_x: 280, note_y:  95, note_name: C },
+        '{note_x: 360, note_y: 100, note_name: G },
+        '{note_x: 440, note_y: 105, note_name: F },
+        '{note_x: 520, note_y: 110, note_name: E },
+        '{note_x: 600, note_y: 115, note_name: D },
+        //8
+        '{note_x:  40, note_y: 100, note_name: E },
+        '{note_x: 120, note_y:  95, note_name: G },
+        '{note_x: 200, note_y:  90, note_name: D },
+        '{note_x: 280, note_y:  95, note_name: C },
+        '{note_x: 360, note_y: 100, note_name: D },
+        '{note_x: 440, note_y: 105, note_name: E },
+        '{note_x: 520, note_y: 110, note_name: G },
+        '{note_x: 600, note_y: 115, note_name: D },
+        //5
+        '{note_x:  40, note_y: 100, note_name: E },
+        '{note_x: 120, note_y:  95, note_name: G },
+        '{note_x: 200, note_y:  90, note_name: D },
+        '{note_x: 280, note_y:  95, note_name: C },
+        '{note_x: 360, note_y: 100, note_name: G },
+        //6
+        '{note_x:  40, note_y: 100, note_name: G },
+        '{note_x: 120, note_y:  95, note_name: F },
+        '{note_x: 200, note_y:  90, note_name: E },
+        '{note_x: 280, note_y:  95, note_name: F },
+        '{note_x: 360, note_y: 100, note_name: E },
+        '{note_x: 440, note_y: 105, note_name: C },
+        //6
+        '{note_x:  40, note_y: 100, note_name: F },
+        '{note_x: 120, note_y:  95, note_name: E },
+        '{note_x: 200, note_y:  90, note_name: D },
+        '{note_x: 280, note_y:  95, note_name: E },
+        '{note_x: 360, note_y: 100, note_name: D },
+        '{note_x: 440, note_y: 105, note_name: A },
+        //8
+        '{note_x:  40, note_y: 100, note_name: G },
+        '{note_x: 120, note_y:  95, note_name: F },
+        '{note_x: 200, note_y:  90, note_name: E },
+        '{note_x: 280, note_y:  95, note_name: F },
+        '{note_x: 360, note_y: 100, note_name: E },
+        '{note_x: 440, note_y: 105, note_name: C },
+        '{note_x: 520, note_y: 110, note_name: F },
+        '{note_x: 600, note_y: 115, note_name: C },
+        //8
+        '{note_x:  40, note_y: 100, note_name: E },
+        '{note_x: 120, note_y:  95, note_name: G },
+        '{note_x: 200, note_y:  90, note_name: D },
+        '{note_x: 280, note_y:  95, note_name: C },
+        '{note_x: 360, note_y: 100, note_name: D },
+        '{note_x: 440, note_y: 105, note_name: E },
+        '{note_x: 520, note_y: 110, note_name: G },
+        '{note_x: 600, note_y: 115, note_name: D },
+        //5
+        '{note_x:  40, note_y: 100, note_name: E },
+        '{note_x: 120, note_y:  95, note_name: G },
+        '{note_x: 200, note_y:  90, note_name: D },
+        '{note_x: 280, note_y:  95, note_name: C },
+        '{note_x: 360, note_y: 100, note_name: G }
+    };
 
     always_comb begin
         red = 0;
