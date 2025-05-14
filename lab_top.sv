@@ -62,9 +62,9 @@ module lab_top
     // assign led        = '0;
     // assign abcdefgh   = '0;
     // assign digit      = '0;
-       assign red        = '0;
-       assign green      = '0;
-       assign blue       = '0;
+    //   assign red        = '0;
+    //   assign green      = '0;
+    //   assign blue       = '0;
        assign sound      = '0;
        assign uart_tx    = '1;
 
@@ -266,85 +266,110 @@ module lab_top
 // OUR CODE STARTS HERE -----------------------------=====================================<<<<<<<<<<<<<<<<<<<<<<<<
 
     typedef struct packed {
-        logic [9:0] x;
-        logic [8:0] y;
+        logic [9:0] note_x;
+        logic [8:0] note_y;
         logic [w_note - 1:0] note_name;
     } NoteCoord_t;
 
     localparam int note_count = 62;
 
-    NoteData_t notes [note_count] =
-    '{
-        '{x:  50, y: 100, note_name: E },
-        '{x:  80, y:  95, note_name: G },
-        '{x: 110, y:  90, note_name: D },
-        '{x: 140, y:  95, note_name: C },
-        '{x: 170, y: 100, note_name: D },
-        '{x: 200, y: 105, note_name: E },
-        '{x: 230, y: 110, note_name: G },
-        '{x: 260, y: 115, note_name: D },
 
-        '{x:  50, y: 100, note_name: E },
-        '{x:  80, y:  95, note_name: G },
-        '{x: 110, y:  90, note_name: D },
-        '{x: 140, y:  95, note_name: C },
-        '{x: 260, y: 115, note_name: G },
-        '{x: 260, y: 115, note_name: F },
-        '{x: 260, y: 115, note_name: E },
-        '{x: 260, y: 115, note_name: D },
+    // // NoteData_t notes [note_count] =
+    // // '{
+    // //     //8
+    // //     '{x:  40, y: 100, note_name: E },
+    // //     '{x: 120, y:  95, note_name: G },
+    // //     '{x: 200, y:  90, note_name: D },
+    // //     '{x: 280, y:  95, note_name: C },
+    // //     '{x: 360, y: 100, note_name: D },
+    // //     '{x: 440, y: 105, note_name: E },
+    // //     '{x: 520, y: 110, note_name: G },
+    // //     '{x: 600, y: 115, note_name: D },
+    // //     //8
+    // //     '{x:  40, y: 100, note_name: E },
+    // //     '{x: 120, y:  95, note_name: G },
+    // //     '{x: 200, y:  90, note_name: D },
+    // //     '{x: 280, y:  95, note_name: C },
+    // //     '{x: 360, y: 115, note_name: G },
+    // //     '{x: 440, y: 115, note_name: F },
+    // //     '{x: 520, y: 115, note_name: E },
+    // //     '{x: 600, y: 115, note_name: D },
+    // //     //8
+    // //     '{x:  40, y: 100, note_name: E },
+    // //     '{x: 120, y:  95, note_name: G },
+    // //     '{x: 200, y:  90, note_name: D },
+    // //     '{x: 280, y:  95, note_name: C },
+    // //     '{x: 360, y: 100, note_name: D },
+    // //     '{x: 440, y: 105, note_name: E },
+    // //     '{x: 520, y: 110, note_name: G },
+    // //     '{x: 600, y: 115, note_name: D },
+    // //     //5
+    // //     '{x:  40, y: 100, note_name: E },
+    // //     '{x: 120, y:  95, note_name: G },
+    // //     '{x: 200, y:  90, note_name: D },
+    // //     '{x: 280, y:  95, note_name: C },
+    // //     '{x: 360, y: 115, note_name: G },
 
-        '{x:  50, y: 100, note_name: E },
-        '{x:  80, y:  95, note_name: G },
-        '{x: 110, y:  90, note_name: D },
-        '{x: 140, y:  95, note_name: C },
-        '{x: 170, y: 100, note_name: D },
-        '{x: 200, y: 105, note_name: E },
-        '{x: 230, y: 110, note_name: G },
-        '{x: 260, y: 115, note_name: D },
+    // //     '{x: 260, y: 115, note_name: G },
+    // //     '{x: 260, y: 115, note_name: F },
+    // //     '{x: 260, y: 115, note_name: E },
+    // //     '{x: 260, y: 115, note_name: F },
+    // //     '{x: 260, y: 115, note_name: E },
+    // //     '{x: 260, y: 115, note_name: C },
 
-        '{x:  50, y: 100, note_name: E },
-        '{x:  80, y:  95, note_name: G },
-        '{x: 110, y:  90, note_name: D },
-        '{x: 140, y:  95, note_name: C },
-        '{x: 260, y: 115, note_name: G },
+    // //     '{x: 260, y: 115, note_name: F },
+    // //     '{x: 260, y: 115, note_name: E },
+    // //     '{x: 260, y: 115, note_name: D },
+    // //     '{x: 260, y: 115, note_name: E },
+    // //     '{x: 260, y: 115, note_name: D },
+    // //     '{x: 260, y: 115, note_name: A },
 
-        '{x: 260, y: 115, note_name: G },
-        '{x: 260, y: 115, note_name: F },
-        '{x: 260, y: 115, note_name: E },
-        '{x: 260, y: 115, note_name: F },
-        '{x: 260, y: 115, note_name: E },
-        '{x: 260, y: 115, note_name: C },
+    // //     '{x: 260, y: 115, note_name: G },
+    // //     '{x: 260, y: 115, note_name: F },
+    // //     '{x: 260, y: 115, note_name: E },
+    // //     '{x: 260, y: 115, note_name: F },
+    // //     '{x: 260, y: 115, note_name: E },
+    // //     '{x: 260, y: 115, note_name: C },
+    // //     '{x: 260, y: 115, note_name: F },
+    // //     '{x: 260, y: 115, note_name: C },
 
-        '{x: 260, y: 115, note_name: F },
-        '{x: 260, y: 115, note_name: E },
-        '{x: 260, y: 115, note_name: D },
-        '{x: 260, y: 115, note_name: E },
-        '{x: 260, y: 115, note_name: D },
-        '{x: 260, y: 115, note_name: A },
+    // //     '{x:  50, y: 100, note_name: E },
+    // //     '{x:  80, y:  95, note_name: G },
+    // //     '{x: 110, y:  90, note_name: D },
+    // //     '{x: 140, y:  95, note_name: C },
+    // //     '{x: 170, y: 100, note_name: D },
+    // //     '{x: 200, y: 105, note_name: E },
+    // //     '{x: 230, y: 110, note_name: G },
+    // //     '{x: 260, y: 115, note_name: D },
 
-        '{x: 260, y: 115, note_name: G },
-        '{x: 260, y: 115, note_name: F },
-        '{x: 260, y: 115, note_name: E },
-        '{x: 260, y: 115, note_name: F },
-        '{x: 260, y: 115, note_name: E },
-        '{x: 260, y: 115, note_name: C },
-        '{x: 260, y: 115, note_name: F },
-        '{x: 260, y: 115, note_name: C },
+    // //     '{x:  50, y: 100, note_name: E },
+    // //     '{x:  80, y:  95, note_name: G },
+    // //     '{x: 110, y:  90, note_name: D },
+    // //     '{x: 140, y:  95, note_name: C },
+    // //     '{x: 260, y: 115, note_name: G }
+    // // };
 
-        '{x:  50, y: 100, note_name: E },
-        '{x:  80, y:  95, note_name: G },
-        '{x: 110, y:  90, note_name: D },
-        '{x: 140, y:  95, note_name: C },
-        '{x: 170, y: 100, note_name: D },
-        '{x: 200, y: 105, note_name: E },
-        '{x: 230, y: 110, note_name: G },
-        '{x: 260, y: 115, note_name: D },
+    always_comb begin
+        red = 0;
+        blue = 0;
+        green = 0;
 
-        '{x:  50, y: 100, note_name: E },
-        '{x:  80, y:  95, note_name: G },
-        '{x: 110, y:  90, note_name: D },
-        '{x: 140, y:  95, note_name: C },
-        '{x: 260, y: 115, note_name: G }
-    };
+        if ( y == 15  || y == 22  || y == 29  || y == 36  || y == 43  ||
+            y == 68  || y == 75  || y == 82  || y == 89  || y == 96  ||
+            y == 121 || y == 128 || y == 135 || y == 142 || y == 149 ||
+            y == 174 || y == 181 || y == 188 || y == 195 || y == 202 ||
+            y == 227 || y == 234 || y == 241 || y == 248 || y == 255 ||
+            y == 280 || y == 287 || y == 294 || y == 301 || y == 308 ||
+            y == 333 || y == 340 || y == 347 || y == 354 || y == 361 ||
+            y == 386 || y == 393 || y == 400 || y == 407 || y == 414 ||
+            y == 439 || y == 446 || y == 453 || y == 460 || y == 467 )
+        begin
+            red   = 32;
+            green = 32;
+            blue  = 0;
+        end
+    end
+
+
 
 endmodule
