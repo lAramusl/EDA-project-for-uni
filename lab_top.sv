@@ -263,4 +263,24 @@ module lab_top
 
     assign digit = w_digit' (1);
 
+    typedef struct packed {
+        logic [9:0] x;
+        logic [8:0] y;
+        logic [w_note - 1:0] 
+    } NoteCoord_t;
+
+    localparam int note_count = 62;
+
+    NoteData_t notes [NUM_NOTES] =
+    '{
+        '{x:  50, y: 100, mask: C },
+        '{x:  80, y:  95, mask: D },
+        '{x: 110, y:  90, mask: E },
+        '{x: 140, y:  95, mask: D },
+        '{x: 170, y: 100, mask: C },
+        '{x: 200, y: 105, mask: D },
+        '{x: 230, y: 110, mask: E },
+        '{x: 260, y: 115, mask: F }
+    };
+
 endmodule
