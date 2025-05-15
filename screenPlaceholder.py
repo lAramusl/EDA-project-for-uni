@@ -8,6 +8,19 @@ line_thickness = 1        # толщина линии
 top_offset = 15
 notes_spacing = 80
 notes_offset = 40
+notesPixelOffsets = {
+            "A1" : 0,
+            "C" : 1,
+            "D" : 2,
+            "E" : 3,
+            "F" : 4,
+            "G" : 5,
+            "A" : 6,
+            "B" : 7,
+            "C1": 8,
+            "D1": 9
+            }
+
 
 def draw_stawes (screen):
     I, J, K = screen.shape
@@ -34,15 +47,6 @@ def draw_stawes (screen):
 def draw_notes (screen, notes):
     I, J, K = screen.shape
 
-    notesPixelOffsets = {
-            "C" : 1,
-            "D" : 2,
-            "E" : 3,
-            "F" : 4,
-            "G" : 5,
-            "A" : 6,
-            "B" : 7,
-            }
 
     for n in notes:
         for y in range(I):
@@ -53,11 +57,21 @@ def draw_notes (screen, notes):
                     else:
                         screen[y][x][color] = 0  # blue канал = 0
 
+
+
 if __name__ == "__main__":
     screen = np.zeros((480, 640, 3), dtype=np.uint8)
-   
     
-    notes = "EGDCDEGDEGDCGFEDEGDCDEGDEGDCGGFEFECFEDEDAGFEFECFCEGDCDEGDEGDCG" 
+    
+    notes = ("E G D C D E G D".split(),
+             "E G D1 C1 G F E D".split(),
+             "E G D C D E G D".split(),
+             "E G D1 C1 G".split(),
+             "G F E F E C".split(),
+             "F E D E D A1".split(),
+             "G F E F E C F C1".split(),
+             "E G D C D E G D".split(),
+             "E G D1 C1 G".split())
     screen = draw_stawes(screen)
     screen = draw_notes(screen, notes)
     cv2.imwrite("test.png", cv2.cvtColor(screen, cv2.COLOR_RGB2BGR))

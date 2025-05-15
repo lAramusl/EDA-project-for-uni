@@ -1,9 +1,11 @@
 E G D C D E G D
-E G D C G F E D
+E G D1 C1 G F E D
 E G D C D E G D
-E G D C G
+E G D1 C1 G
 G F E F E C
-F E D E D A
-G F E F E C F C
+F E D E D A1
+G F E F E C F C1
 E G D C D E G D
-E G D C G
+E G D1 C1 G
+
+"E G D C D E G D E G D1 C1 G F E D E G D C D E G D E G D1 C1 G G F E F E C F E D E D A1 G F E F E C F C1 E G D C D E G D E G D1 C1 G"
