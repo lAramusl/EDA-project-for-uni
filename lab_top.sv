@@ -265,6 +265,7 @@ module lab_top
 
 // OUR CODE STARTS HERE -----------------------------=====================================<<<<<<<<<<<<<<<<<<<<<<<<
 
+    
     typedef struct packed {
         logic [9:0] note_x;
         logic [8:0] note_y;
@@ -367,9 +368,17 @@ module lab_top
         green <= 0;
         blue  <= 0;
         
-        if (is_in_circle(x, y, circle_x, circle_y, 3)) begin
-            red   <= 32;
-            green <= 32;
+        for (int i = 0; i < note_count; i++) begin
+            if (is_in_circle(x, y, notes[i].note_x, notes[i].note_y, 3)) begin
+                if (game_active && i == note_index) begin
+                    if (show_success)
+                        {red, green, blue} <= {4'd0, 4'd15, 4'd0};  // зелёный
+                    else if (show_failure)
+                        {red, green, blue} <= {4'd15, 4'd0, 4'd0};  // красный
+                end else begin
+                    {red, green, blue} <= {4'd15, 4'd15, 4'd0}; // жёлтый кружок
+                end
+            end
         end
             
     end
@@ -395,6 +404,87 @@ module lab_top
         end
     end
 
+//Game
+    typedef enum logic [1:0] {
+        IDLE,
+        PLAYING,
+        WIN,
+        FAIL
+    } GameState;
+
+    GameState game_state;
+
+
+    logic [6:0] note_index;
+    logic game_active;
+    logic prev_key, key_pressed;
+    logic show_success, show_failure;
+
+    always_ff @(posedge clk or posedge rst) begin
+        if (rst) begin
+            prev_key     <= 0;
+            key_pressed  <= 0;
+        end else begin
+            prev_key     <= key[0];  // кнопка запуска — key[0]
+            key_pressed  <= ~prev_key & key[0];  // фронт
+        end
+    end
+
+    always_ff @(posedge clk or posedge rst) begin
+        if (rst) begin
+            game_state   <= IDLE;
+            note_index   <= 0;
+            game_active  <= 0;
+            show_success <= 0;
+            show_failure <= 0;
+        end else begin
+            case (game_state)
+
+                IDLE: begin
+                    show_success <= 0;
+                    show_failure <= 0;
+                    if (key_pressed) begin
+                        game_active <= 1;
+                        game_state <= PLAYING;
+                        note_index <= 0;
+                    end
+                end
+
+                PLAYING: begin
+                    if (key_pressed) begin
+                        ame_state <= IDLE;  // Прервать игру повторным нажатием
+                        game_active <= 0;
+                    end else if (t_note != no_note) begin  // нота сыграна
+                        if (t_note == notes[note_index].note_name) begin
+                            show_success <= 1;
+                            show_failure <= 0;
+                            if (note_index == note_count - 1) begin
+                                game_state <= WIN;
+                            end else begin
+                                note_index <= note_index + 1;
+                            end
+                        end else begin
+                            show_success <= 0;
+                            show_failure <= 1;
+                            game_state <= FAIL;
+                        end
+                    end
+                end
+
+                FAIL: begin
+                // Показываем красный кружок и сбрасываем
+                    note_index <= 0;
+                    if (key_pressed) game_state <= IDLE;
+                end
+
+                WIN: begin
+                // Показываем, что игра пройдена
+                    if (key_pressed) game_state <= IDLE;
+                end
+
+            endcase
+        end
+    end
 
 
 endmodule
