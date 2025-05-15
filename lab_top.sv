@@ -301,76 +301,76 @@ module lab_top
     NoteData_t notes [note_count] =
     '{
         //8
-        '{note_x:  40, note_y: 100, note_name: E },
-        '{note_x: 120, note_y:  95, note_name: G },
-        '{note_x: 200, note_y:  90, note_name: D },
-        '{note_x: 280, note_y:  95, note_name: C },
-        '{note_x: 360, note_y: 100, note_name: D },
-        '{note_x: 440, note_y: 105, note_name: E },
-        '{note_x: 520, note_y: 110, note_name: G },
-        '{note_x: 600, note_y: 115, note_name: D },
+        '{note_x:  40, note_y:  39, note_name: E },
+        '{note_x: 120, note_y:  32, note_name: G },
+        '{note_x: 200, note_y:  43, note_name: D },
+        '{note_x: 280, note_y:  46, note_name: C },
+        '{note_x: 360, note_y:  43, note_name: D },
+        '{note_x: 440, note_y:  39, note_name: E },
+        '{note_x: 520, note_y:  32, note_name: G },
+        '{note_x: 600, note_y:  43, note_name: D },
         //8
-        '{note_x:  40, note_y: 100, note_name: E },
-        '{note_x: 120, note_y:  95, note_name: G },
-        '{note_x: 200, note_y:  90, note_name: D },
-        '{note_x: 280, note_y:  95, note_name: C },
-        '{note_x: 360, note_y: 100, note_name: G },
-        '{note_x: 440, note_y: 105, note_name: F },
-        '{note_x: 520, note_y: 110, note_name: E },
-        '{note_x: 600, note_y: 115, note_name: D },
+        '{note_x:  40, note_y:  92, note_name: E },
+        '{note_x: 120, note_y:  85, note_name: G },
+        '{note_x: 200, note_y:  71, note_name: D1 },
+        '{note_x: 280, note_y:  75, note_name: C1 },
+        '{note_x: 360, note_y:  85, note_name: G },
+        '{note_x: 440, note_y:  89, note_name: F },
+        '{note_x: 520, note_y:  92, note_name: E },
+        '{note_x: 600, note_y:  96, note_name: D },
         //8
-        '{note_x:  40, note_y: 100, note_name: E },
-        '{note_x: 120, note_y:  95, note_name: G },
-        '{note_x: 200, note_y:  90, note_name: D },
-        '{note_x: 280, note_y:  95, note_name: C },
-        '{note_x: 360, note_y: 100, note_name: D },
-        '{note_x: 440, note_y: 105, note_name: E },
-        '{note_x: 520, note_y: 110, note_name: G },
-        '{note_x: 600, note_y: 115, note_name: D },
+        '{note_x:  40, note_y: 145, note_name: E },
+        '{note_x: 120, note_y: 138, note_name: G },
+        '{note_x: 200, note_y: 149, note_name: D },
+        '{note_x: 280, note_y: 152, note_name: C },
+        '{note_x: 360, note_y: 149, note_name: D },
+        '{note_x: 440, note_y: 145, note_name: E },
+        '{note_x: 520, note_y: 138, note_name: G },
+        '{note_x: 600, note_y: 149, note_name: D },
         //5
-        '{note_x:  40, note_y: 100, note_name: E },
-        '{note_x: 120, note_y:  95, note_name: G },
-        '{note_x: 200, note_y:  90, note_name: D },
-        '{note_x: 280, note_y:  95, note_name: C },
-        '{note_x: 360, note_y: 100, note_name: G },
+        '{note_x:  40, note_y: 198, note_name: E },
+        '{note_x: 120, note_y: 191, note_name: G },
+        '{note_x: 200, note_y: 177, note_name: D1 },
+        '{note_x: 280, note_y: 181, note_name: C1 },
+        '{note_x: 360, note_y: 191, note_name: G },
         //6
-        '{note_x:  40, note_y: 100, note_name: G },
-        '{note_x: 120, note_y:  95, note_name: F },
-        '{note_x: 200, note_y:  90, note_name: E },
-        '{note_x: 280, note_y:  95, note_name: F },
-        '{note_x: 360, note_y: 100, note_name: E },
-        '{note_x: 440, note_y: 105, note_name: C },
+        '{note_x:  40, note_y: 244, note_name: G },
+        '{note_x: 120, note_y: 248, note_name: F },
+        '{note_x: 200, note_y: 251, note_name: E },
+        '{note_x: 280, note_y: 248, note_name: F },
+        '{note_x: 360, note_y: 251, note_name: E },
+        '{note_x: 440, note_y: 258, note_name: C },
         //6
-        '{note_x:  40, note_y: 100, note_name: F },
-        '{note_x: 120, note_y:  95, note_name: E },
-        '{note_x: 200, note_y:  90, note_name: D },
-        '{note_x: 280, note_y:  95, note_name: E },
-        '{note_x: 360, note_y: 100, note_name: D },
-        '{note_x: 440, note_y: 105, note_name: A },
+        '{note_x:  40, note_y: 301, note_name: F },
+        '{note_x: 120, note_y: 304, note_name: E },
+        '{note_x: 200, note_y: 308, note_name: D },
+        '{note_x: 280, note_y: 304, note_name: E },
+        '{note_x: 360, note_y: 308, note_name: D },
+        '{note_x: 440, note_y: 315, note_name: A1 },
         //8
-        '{note_x:  40, note_y: 100, note_name: G },
-        '{note_x: 120, note_y:  95, note_name: F },
-        '{note_x: 200, note_y:  90, note_name: E },
-        '{note_x: 280, note_y:  95, note_name: F },
-        '{note_x: 360, note_y: 100, note_name: E },
-        '{note_x: 440, note_y: 105, note_name: C },
-        '{note_x: 520, note_y: 110, note_name: F },
-        '{note_x: 600, note_y: 115, note_name: C },
+        '{note_x:  40, note_y: 350, note_name: G },
+        '{note_x: 120, note_y: 354, note_name: F },
+        '{note_x: 200, note_y: 357, note_name: E },
+        '{note_x: 280, note_y: 354, note_name: F },
+        '{note_x: 360, note_y: 357, note_name: E },
+        '{note_x: 440, note_y: 364, note_name: C },
+        '{note_x: 520, note_y: 354, note_name: F },
+        '{note_x: 600, note_y: 340, note_name: C1 },
         //8
-        '{note_x:  40, note_y: 100, note_name: E },
-        '{note_x: 120, note_y:  95, note_name: G },
-        '{note_x: 200, note_y:  90, note_name: D },
-        '{note_x: 280, note_y:  95, note_name: C },
-        '{note_x: 360, note_y: 100, note_name: D },
-        '{note_x: 440, note_y: 105, note_name: E },
-        '{note_x: 520, note_y: 110, note_name: G },
-        '{note_x: 600, note_y: 115, note_name: D },
+        '{note_x:  40, note_y: 410, note_name: E },
+        '{note_x: 120, note_y: 403, note_name: G },
+        '{note_x: 200, note_y: 414, note_name: D },
+        '{note_x: 280, note_y: 417, note_name: C },
+        '{note_x: 360, note_y: 414, note_name: D },
+        '{note_x: 440, note_y: 410, note_name: E },
+        '{note_x: 520, note_y: 403, note_name: G },
+        '{note_x: 600, note_y: 414, note_name: D },
         //5
-        '{note_x:  40, note_y: 100, note_name: E },
-        '{note_x: 120, note_y:  95, note_name: G },
-        '{note_x: 200, note_y:  90, note_name: D },
-        '{note_x: 280, note_y:  95, note_name: C },
-        '{note_x: 360, note_y: 100, note_name: G }
+        '{note_x:  40, note_y: 463, note_name: E },
+        '{note_x: 120, note_y: 456, note_name: G },
+        '{note_x: 200, note_y: 442, note_name: D1 },
+        '{note_x: 280, note_y: 446, note_name: C1 },
+        '{note_x: 360, note_y: 456, note_name: G }
     };
 
     function logic is_in_circle(
@@ -387,9 +387,9 @@ module lab_top
     endfunction
 
     always_ff @(posedge clk) begin
-        red   = 0;
-        green = 0;
-        blue  = 0;
+        red   <= 0;
+        green <= 0;
+        blue  <= 0;
         
 
         if ( y == 15  || y == 22  || y == 29  || y == 36  || y == 43  ||
@@ -402,20 +402,20 @@ module lab_top
              y == 386 || y == 393 || y == 400 || y == 407 || y == 414 ||
              y == 439 || y == 446 || y == 453 || y == 460 || y == 467 )
         begin
-            red   = 32;
-            green = 32;
+            red   <= 32;
+            green <= 32;
         end
 
         for (int i = 0; i < note_count; i++) begin
-            if (is_in_circle(x, y, notes[i].note_x, notes[i].note_y, 3)) begin
+            if (is_in_circle(x, y, notes[i].note_x, notes[i].note_y, 4)) begin
                 if (game_active && i == note_index) begin
                     if (show_success)
-                        red = 0;
+                        red <= 0;
                     else if (show_failure)
-                        green = 0;
+                        green <= 0;
                 end else begin
-                    red = 32;
-                    green = 32;
+                    red <= 32;
+                    green <= 32;
                 end
             end
         end
