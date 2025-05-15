@@ -132,9 +132,9 @@ module lab_top
                freq_100_Gs  = 83061,
                freq_100_A   = 88000,
                freq_100_As  = 93233,
-               freq_100_B   = 98777;
-               freq_100_C1  = 104650;
-               freq_100_C1s = 110870;
+               freq_100_B   = 98777,
+               freq_100_C1  = 104650,
+               freq_100_C1s = 110870,
                freq_100_D1  = 117410;
     `endif
 
