@@ -351,11 +351,11 @@ module lab_top
     };
 
     function logic is_in_circle(
-        input int pixel_x,      // координата пикселя по x
-        input int pixel_y,      // координата пикселя по y
-        input int circle_cx,    // центр окружности x
-        input int circle_cy,    // центр окружности y
-        input int radius        // радиус окружности
+        input int pixel_x,    
+        input int pixel_y,    
+        input int circle_cx,  
+        input int circle_cy,  
+        input int radius     
     );
         int dx = pixel_x - circle_cx;
         int dy = pixel_y - circle_cy;
@@ -364,30 +364,10 @@ module lab_top
     endfunction
 
     always_ff @(posedge clk) begin
-        red   <= 0;
-        green <= 0;
-        blue  <= 0;
-        
-        for (int i = 0; i < note_count; i++) begin
-            if (is_in_circle(x, y, notes[i].note_x, notes[i].note_y, 3)) begin
-                if (game_active && i == note_index) begin
-                    if (show_success)
-                        {red, green, blue} <= {4'd0, 4'd15, 4'd0};  // зелёный
-                    else if (show_failure)
-                        {red, green, blue} <= {4'd15, 4'd0, 4'd0};  // красный
-                end else begin
-                    {red, green, blue} <= {4'd15, 4'd15, 4'd0}; // жёлтый кружок
-                end
-            end
-        end
-            
-    end
-
-
-    always_comb begin
-        red = 0;
-        blue = 0;
+        red   = 0;
         green = 0;
+        blue  = 0;
+        
 
         if ( y == 15  || y == 22  || y == 29  || y == 36  || y == 43  ||
              y == 68  || y == 75  || y == 82  || y == 89  || y == 96  ||
@@ -402,8 +382,23 @@ module lab_top
             red   = 32;
             green = 32;
         end
-    end
 
+        for (int i = 0; i < note_count; i++) begin
+            if (is_in_circle(x, y, notes[i].note_x, notes[i].note_y, 3)) begin
+                if (game_active && i == note_index) begin
+                    if (show_success)
+                        red = 0;
+                    else if (show_failure)
+                        green = 0;
+                end else begin
+                    red = 32;
+                    green = 32;
+                end
+            end
+        end
+            
+    end
+    
 //Game
     typedef enum logic [1:0] {
         IDLE,
@@ -413,7 +408,6 @@ module lab_top
     } GameState;
 
     GameState game_state;
-
 
     logic [6:0] note_index;
     logic game_active;
@@ -425,8 +419,8 @@ module lab_top
             prev_key     <= 0;
             key_pressed  <= 0;
         end else begin
-            prev_key     <= key[0];  // кнопка запуска — key[0]
-            key_pressed  <= ~prev_key & key[0];  // фронт
+            prev_key     <= key[0];
+            key_pressed  <= ~prev_key & key[0];
         end
     end
 
@@ -452,9 +446,9 @@ module lab_top
 
                 PLAYING: begin
                     if (key_pressed) begin
-                        ame_state <= IDLE;  // Прервать игру повторным нажатием
+                        game_state <= IDLE;
                         game_active <= 0;
-                    end else if (t_note != no_note) begin  // нота сыграна
+                    end else if (t_note != no_note) begin
                         if (t_note == notes[note_index].note_name) begin
                             show_success <= 1;
                             show_failure <= 0;
@@ -472,14 +466,16 @@ module lab_top
                 end
 
                 FAIL: begin
-                // Показываем красный кружок и сбрасываем
                     note_index <= 0;
-                    if (key_pressed) game_state <= IDLE;
+                    if (key_pressed) begin
+                     game_state <= IDLE;
+                    end
                 end
 
                 WIN: begin
-                // Показываем, что игра пройдена
-                    if (key_pressed) game_state <= IDLE;
+                    if (key_pressed) begin
+                         game_state <= IDLE;
+                    end
                 end
 
             endcase
