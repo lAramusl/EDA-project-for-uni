@@ -118,18 +118,24 @@ module lab_top
 
     // Custom measured frequencies
 
-    localparam freq_100_C  = 26163,
-               freq_100_Cs = 27718,
-               freq_100_D  = 29366,
-               freq_100_Ds = 31113,
-               freq_100_E  = 32963,
-               freq_100_F  = 34923,
-               freq_100_Fs = 36999,
-               freq_100_G  = 39200,
-               freq_100_Gs = 41530,
-               freq_100_A  = 44000,
-               freq_100_As = 46616,
-               freq_100_B  = 49388;
+    localparam freq_100_A1  = 44000,
+               freq_100_A1s = 46616,
+               freq_100_B1  = 49388,
+               freq_100_C   = 52325,
+               freq_100_Cs  = 55437,
+               freq_100_D   = 58733,
+               freq_100_Ds  = 62225,
+               freq_100_E   = 65926,
+               freq_100_F   = 69846,
+               freq_100_Fs  = 73999,
+               freq_100_G   = 78399,
+               freq_100_Gs  = 83061,
+               freq_100_A   = 88000,
+               freq_100_As  = 93233,
+               freq_100_B   = 98777;
+               freq_100_C1  = 104650;
+               freq_100_C1s = 110870;
+               freq_100_D1  = 117410;
     `endif
 
     //------------------------------------------------------------------------
@@ -164,22 +170,28 @@ module lab_top
 
     //------------------------------------------------------------------------
 
-    wire check_C  = check_freq (freq_100_C  , distance );
-    wire check_Cs = check_freq (freq_100_Cs , distance );
-    wire check_D  = check_freq (freq_100_D  , distance );
-    wire check_Ds = check_freq (freq_100_Ds , distance );
-    wire check_E  = check_freq (freq_100_E  , distance );
-    wire check_F  = check_freq (freq_100_F  , distance );
-    wire check_Fs = check_freq (freq_100_Fs , distance );
-    wire check_G  = check_freq (freq_100_G  , distance );
-    wire check_Gs = check_freq (freq_100_Gs , distance );
-    wire check_A  = check_freq (freq_100_A  , distance );
-    wire check_As = check_freq (freq_100_As , distance );
-    wire check_B  = check_freq (freq_100_B  , distance );
+    wire check_A1   = check_freq (freq_100_A1  , distance );
+    wire check_A1s  = check_freq (freq_100_A1s  , distance );
+    wire check_B1   = check_freq (freq_100_B1  , distance );
+    wire check_C    = check_freq (freq_100_C  , distance );
+    wire check_Cs   = check_freq (freq_100_Cs , distance );
+    wire check_D    = check_freq (freq_100_D  , distance );
+    wire check_Ds   = check_freq (freq_100_Ds , distance );
+    wire check_E    = check_freq (freq_100_E  , distance );
+    wire check_F    = check_freq (freq_100_F  , distance );
+    wire check_Fs   = check_freq (freq_100_Fs , distance );
+    wire check_G    = check_freq (freq_100_G  , distance );
+    wire check_Gs   = check_freq (freq_100_Gs , distance );
+    wire check_A    = check_freq (freq_100_A  , distance );
+    wire check_As   = check_freq (freq_100_As , distance );
+    wire check_B    = check_freq (freq_100_B  , distance );
+    wire check_C1   = check_freq (freq_100_C1  , distance );
+    wire check_C1s  = check_freq (freq_100_C1s  , distance );
+    wire check_D1   = check_freq (freq_100_D1  , distance );
 
     //------------------------------------------------------------------------
 
-    localparam w_note = 12;
+    localparam w_note = 18;
 
     wire [w_note - 1:0] note = { check_C  , check_Cs , check_D  , check_Ds ,
                                  check_E  , check_F  , check_Fs , check_G  ,
