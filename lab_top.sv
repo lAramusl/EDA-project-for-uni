@@ -62,14 +62,32 @@ module lab_top
     // assign led        = '0;
     // assign abcdefgh   = '0;
     // assign digit      = '0;
-    //   assign red        = '0;
-    //   assign green      = '0;
-    //   assign blue       = '0;
+      // assign red        = '0;
+       //assign green      = '0;
+       //assign blue       = '0;
        assign sound      = '0;
        assign uart_tx    = '1;
 
+    //------------------------------------------------------------------------
+    //
+    //  Exercise 1: Uncomment this instantation
+    //  to see the value coming from the microphone (in hexadecimal).
+    //
+    //------------------------------------------------------------------------
+
     wire [w_digit - 1:0] dots = '0;
     localparam w_number = w_digit * 4;
+
+    // seven_segment_display # (w_digit)
+    // i_7segment (.number (w_number' (mic)), .*);
+
+    //------------------------------------------------------------------------
+    //
+    //  Measuring frequency
+    //
+    //------------------------------------------------------------------------
+
+    // It is enough for the counter to be 20 bit. Why?
 
     logic [23:0] prev_mic;
     logic [19:0] counter;
@@ -100,6 +118,32 @@ module lab_top
             end
         end
 
+    //------------------------------------------------------------------------
+    //
+    //  Exercise 2: Uncomment this instantation
+    //  to see the value of the counter.
+    //
+    //------------------------------------------------------------------------
+
+    // seven_segment_display # (w_digit)
+    // i_7segment (.number (w_number' (counter)), .*);
+
+    //------------------------------------------------------------------------
+    //
+    //  Exercise 3: Uncomment this instantation
+    //  to see the period of the sound wave coming from the microphone.
+    //
+    //------------------------------------------------------------------------
+
+    // seven_segment_display # (w_digit)
+    // i_7segment (.number (w_number' (distance [19:4])), .*);
+
+    //------------------------------------------------------------------------
+    //
+    //  Determining the note
+    //
+    //------------------------------------------------------------------------
+
     `ifdef USE_STANDARD_FREQUENCIES
 
     localparam freq_100_C  = 26163,
@@ -118,24 +162,18 @@ module lab_top
 
     // Custom measured frequencies
 
-    localparam freq_100_A1  = 44000,
-               freq_100_A1s = 46616,
-               freq_100_B1  = 49388,
-               freq_100_C   = 52325,
-               freq_100_Cs  = 55437,
-               freq_100_D   = 58733,
-               freq_100_Ds  = 62225,
-               freq_100_E   = 65926,
-               freq_100_F   = 69846,
-               freq_100_Fs  = 73999,
-               freq_100_G   = 78399,
-               freq_100_Gs  = 83061,
-               freq_100_A   = 88000,
-               freq_100_As  = 93233,
-               freq_100_B   = 98777,
-               freq_100_C1  = 104650,
-               freq_100_C1s = 110870,
-               freq_100_D1  = 117410;
+    localparam freq_100_C  = 26163,
+               freq_100_Cs = 27718,
+               freq_100_D  = 29366,
+               freq_100_Ds = 31113,
+               freq_100_E  = 32963,
+               freq_100_F  = 34923,
+               freq_100_Fs = 36999,
+               freq_100_G  = 39200,
+               freq_100_Gs = 41530,
+               freq_100_A  = 44000,
+               freq_100_As = 46616,
+               freq_100_B  = 49388;
     `endif
 
     //------------------------------------------------------------------------
@@ -170,60 +208,43 @@ module lab_top
 
     //------------------------------------------------------------------------
 
-    wire check_A1   = check_freq (freq_100_A1  , distance );
-    wire check_A1s  = check_freq (freq_100_A1s  , distance );
-    wire check_B1   = check_freq (freq_100_B1  , distance );
-    wire check_C    = check_freq (freq_100_C  , distance );
-    wire check_Cs   = check_freq (freq_100_Cs , distance );
-    wire check_D    = check_freq (freq_100_D  , distance );
-    wire check_Ds   = check_freq (freq_100_Ds , distance );
-    wire check_E    = check_freq (freq_100_E  , distance );
-    wire check_F    = check_freq (freq_100_F  , distance );
-    wire check_Fs   = check_freq (freq_100_Fs , distance );
-    wire check_G    = check_freq (freq_100_G  , distance );
-    wire check_Gs   = check_freq (freq_100_Gs , distance );
-    wire check_A    = check_freq (freq_100_A  , distance );
-    wire check_As   = check_freq (freq_100_As , distance );
-    wire check_B    = check_freq (freq_100_B  , distance );
-    wire check_C1   = check_freq (freq_100_C1  , distance );
-    wire check_C1s  = check_freq (freq_100_C1s  , distance );
-    wire check_D1   = check_freq (freq_100_D1  , distance );
+    wire check_C  = check_freq (freq_100_C  , distance );
+    wire check_Cs = check_freq (freq_100_Cs , distance );
+    wire check_D  = check_freq (freq_100_D  , distance );
+    wire check_Ds = check_freq (freq_100_Ds , distance );
+    wire check_E  = check_freq (freq_100_E  , distance );
+    wire check_F  = check_freq (freq_100_F  , distance );
+    wire check_Fs = check_freq (freq_100_Fs , distance );
+    wire check_G  = check_freq (freq_100_G  , distance );
+    wire check_Gs = check_freq (freq_100_Gs , distance );
+    wire check_A  = check_freq (freq_100_A  , distance );
+    wire check_As = check_freq (freq_100_As , distance );
+    wire check_B  = check_freq (freq_100_B  , distance );
 
     //------------------------------------------------------------------------
 
-    localparam w_note = 18;
+    localparam w_note = 12;
 
-    wire [w_note - 1:0] note = { check_A1 , check_A1s , check_B1 ,
-                                 check_C  , check_Cs , check_D  , check_Ds ,
+    wire [w_note - 1:0] note = { check_C  , check_Cs , check_D  , check_Ds ,
                                  check_E  , check_F  , check_Fs , check_G  ,
-                                 check_Gs , check_A  , check_As , check_B  ,
-                                 check_C1 , check_C1s , check_D1};
+                                 check_Gs , check_A  , check_As , check_B  };
 
-    localparam [w_note - 1:0] no_note = 18'b0,
+    localparam [w_note - 1:0] no_note = 12'b0,
 
-                            A1  = 18'b1000_0000_0000_0000_00,
-                            A1s = 18'b0100_0000_0000_0000_00,
-                            B1  = 18'b0010_0000_0000_0000_00,
+                              C  = 12'b1000_0000_0000,
+                              Cs = 12'b0100_0000_0000,
+                              D  = 12'b0010_0000_0000,
+                              Ds = 12'b0001_0000_0000,
+                              E  = 12'b0000_1000_0000,
+                              F  = 12'b0000_0100_0000,
+                              Fs = 12'b0000_0010_0000,
+                              G  = 12'b0000_0001_0000,
+                              Gs = 12'b0000_0000_1000,
+                              A  = 12'b0000_0000_0100,
+                              As = 12'b0000_0000_0010,
+                              B  = 12'b0000_0000_0001;
 
-                            C   = 18'b0001_0000_0000_0000_00,
-                            Cs  = 18'b0000_1000_0000_0000_00,
-                            D   = 18'b0000_0100_0000_0000_00,
-                            Ds  = 18'b0000_0010_0000_0000_00,
-                            E   = 18'b0000_0001_0000_0000_00,
-                            F   = 18'b0000_0000_1000_0000_00,
-                            Fs  = 18'b0000_0000_0100_0000_00,
-                            G   = 18'b0000_0000_0010_0000_00,
-                            Gs  = 18'b0000_0000_0001_0000_00,
-                            A   = 18'b0000_0000_0000_1000_00,
-                            As  = 18'b0000_0000_0000_0100_00,
-                            B   = 18'b0000_0000_0000_0010_00,
-
-                            C1  = 18'b0000_0000_0000_0001_00,
-                            C1s = 18'b0000_0000_0000_0000_10,
-                            D1  = 18'b0000_0000_0000_0000_01;
-
-    localparam [w_note - 1:0] Df = Cs, Ef = Ds, Gf = Fs, Af = Gs, Bf = As, D1f = C1s, B1f = A1s;
-
+    localparam [w_note - 1:0] Df = Cs, Ef = Ds, Gf = Fs, Af = Gs, Bf = As;
 
     //------------------------------------------------------------------------
     //
@@ -264,31 +285,36 @@ module lab_top
     //
     //------------------------------------------------------------------------
 
-    // always_ff @ (posedge clk or posedge rst)
-    //     if (rst)
-    //         abcdefgh <= 8'b00000000;
-    //     else
-    //         case (t_note)
-    //         C  : abcdefgh <= 8'b10011100;  // C   // abcdefgh
-    //         Cs : abcdefgh <= 8'b10011101;  // C#
-    //         D  : abcdefgh <= 8'b01111010;  // D   //   --a--
-    //         Ds : abcdefgh <= 8'b01111011;  // D#  //  |     |
-    //         E  : abcdefgh <= 8'b10011110;  // E   //  f     b
-    //         F  : abcdefgh <= 8'b10001110;  // F   //  |     |
-    //         Fs : abcdefgh <= 8'b10001111;  // F#  //   --g--
-    //         G  : abcdefgh <= 8'b10111100;  // G   //  |     |
-    //         Gs : abcdefgh <= 8'b10111101;  // G#  //  e     c
-    //         A  : abcdefgh <= 8'b11101110;  // A   //  |     |
-    //         As : abcdefgh <= 8'b11101111;  // A#  //   --d--  h
-    //         B  : abcdefgh <= 8'b00111110;  // B
-    //         default : abcdefgh <= 8'b00000010;
-    //         endcase
+    always_ff @ (posedge clk or posedge rst)
+        if (rst)
+            abcdefgh <= 8'b00000000;
+        else
+            case (t_note)
+            C  : abcdefgh <= 8'b10011100;  // C   // abcdefgh
+            Cs : abcdefgh <= 8'b10011101;  // C#
+            D  : abcdefgh <= 8'b01111010;  // D   //   --a--
+            Ds : abcdefgh <= 8'b01111011;  // D#  //  |     |
+            E  : abcdefgh <= 8'b10011110;  // E   //  f     b
+            F  : abcdefgh <= 8'b10001110;  // F   //  |     |
+            Fs : abcdefgh <= 8'b10001111;  // F#  //   --g--
+            G  : abcdefgh <= 8'b10111100;  // G   //  |     |
+            Gs : abcdefgh <= 8'b10111101;  // G#  //  e     c
+            A  : abcdefgh <= 8'b11101110;  // A   //  |     |
+            As : abcdefgh <= 8'b11101111;  // A#  //   --d--  h
+            B  : abcdefgh <= 8'b00111110;  // B
+            default : abcdefgh <= 8'b00000010;
+            endcase
 
     assign digit = w_digit' (1);
 
-// OUR CODE STARTS HERE -----------------------------=====================================<<<<<<<<<<<<<<<<<<<<<<<<
+    //------------------------------------------------------------------------
+    //
+    //  Exercise 4: Replace filtered note with unfiltered note.
+    //  Do you see the difference?
+    //
+    //------------------------------------------------------------------------
 
-    
+ 
     typedef struct packed {
         logic [9:0] note_x;
         logic [8:0] note_y;
@@ -298,130 +324,123 @@ module lab_top
     localparam int note_count = 62;
 
 
-    NoteData_t notes [note_count] =
+   NoteData_t notes [note_count] =
     '{
         //8
-        '{note_x:  40, note_y:  39, note_name: E },
-        '{note_x: 120, note_y:  32, note_name: G },
-        '{note_x: 200, note_y:  43, note_name: D },
-        '{note_x: 280, note_y:  46, note_name: C },
-        '{note_x: 360, note_y:  43, note_name: D },
-        '{note_x: 440, note_y:  39, note_name: E },
-        '{note_x: 520, note_y:  32, note_name: G },
-        '{note_x: 600, note_y:  43, note_name: D },
+        '{note_x:  30, note_y:  22, note_name: E },
+        '{note_x:  90, note_y:  18, note_name: G },
+        '{note_x: 150, note_y:  24, note_name: D },
+        '{note_x: 210, note_y:  26, note_name: C },
+        '{note_x: 270, note_y:  24, note_name: D },
+        '{note_x: 330, note_y:  22, note_name: E },
+        '{note_x: 390, note_y:  18, note_name: G },
+        '{note_x: 450, note_y:  24, note_name: D },
         //8
-        '{note_x:  40, note_y:  92, note_name: E },
-        '{note_x: 120, note_y:  85, note_name: G },
-        '{note_x: 200, note_y:  71, note_name: D1 },
-        '{note_x: 280, note_y:  75, note_name: C1 },
-        '{note_x: 360, note_y:  85, note_name: G },
-        '{note_x: 440, note_y:  89, note_name: F },
-        '{note_x: 520, note_y:  92, note_name: E },
-        '{note_x: 600, note_y:  96, note_name: D },
+        '{note_x:  30, note_y:  52, note_name: E },
+        '{note_x:  90, note_y:  48, note_name: G },
+        '{note_x: 150, note_y:  40, note_name: D },
+        '{note_x: 210, note_y:  42, note_name: C },
+        '{note_x: 270, note_y:  48, note_name: G },
+        '{note_x: 330, note_y:  50, note_name: F },
+        '{note_x: 390, note_y:  52, note_name: E },
+        '{note_x: 450, note_y:  54, note_name: D },
         //8
-        '{note_x:  40, note_y: 145, note_name: E },
-        '{note_x: 120, note_y: 138, note_name: G },
-        '{note_x: 200, note_y: 149, note_name: D },
-        '{note_x: 280, note_y: 152, note_name: C },
-        '{note_x: 360, note_y: 149, note_name: D },
-        '{note_x: 440, note_y: 145, note_name: E },
-        '{note_x: 520, note_y: 138, note_name: G },
-        '{note_x: 600, note_y: 149, note_name: D },
+        '{note_x:  30, note_y:  82, note_name: E },
+        '{note_x:  90, note_y:  78, note_name: G },
+        '{note_x: 150, note_y:  84, note_name: D },
+        '{note_x: 210, note_y:  86, note_name: C },
+        '{note_x: 270, note_y:  84, note_name: D },
+        '{note_x: 330, note_y:  82, note_name: E },
+        '{note_x: 390, note_y:  78, note_name: G },
+        '{note_x: 450, note_y:  84, note_name: D },
         //5
-        '{note_x:  40, note_y: 198, note_name: E },
-        '{note_x: 120, note_y: 191, note_name: G },
-        '{note_x: 200, note_y: 177, note_name: D1 },
-        '{note_x: 280, note_y: 181, note_name: C1 },
-        '{note_x: 360, note_y: 191, note_name: G },
+        '{note_x:  30, note_y: 112, note_name: E },
+        '{note_x:  90, note_y: 108, note_name: G },
+        '{note_x: 150, note_y: 100, note_name: D },
+        '{note_x: 210, note_y: 102, note_name: C },
+        '{note_x: 270, note_y: 108, note_name: G },
         //6
-        '{note_x:  40, note_y: 244, note_name: G },
-        '{note_x: 120, note_y: 248, note_name: F },
-        '{note_x: 200, note_y: 251, note_name: E },
-        '{note_x: 280, note_y: 248, note_name: F },
-        '{note_x: 360, note_y: 251, note_name: E },
-        '{note_x: 440, note_y: 258, note_name: C },
+        '{note_x:  30, note_y: 138, note_name: G },
+        '{note_x:  90, note_y: 140, note_name: F },
+        '{note_x: 150, note_y: 142, note_name: E },
+        '{note_x: 210, note_y: 140, note_name: F },
+        '{note_x: 270, note_y: 142, note_name: E },
+        '{note_x: 330, note_y: 146, note_name: C },
         //6
-        '{note_x:  40, note_y: 301, note_name: F },
-        '{note_x: 120, note_y: 304, note_name: E },
-        '{note_x: 200, note_y: 308, note_name: D },
-        '{note_x: 280, note_y: 304, note_name: E },
-        '{note_x: 360, note_y: 308, note_name: D },
-        '{note_x: 440, note_y: 315, note_name: A1 },
+        '{note_x:  30, note_y: 171, note_name: F },
+        '{note_x:  90, note_y: 172, note_name: E },
+        '{note_x: 150, note_y: 174, note_name: D },
+        '{note_x: 210, note_y: 172, note_name: E },
+        '{note_x: 270, note_y: 174, note_name: D },
+        '{note_x: 330, note_y: 179, note_name: A },
         //8
-        '{note_x:  40, note_y: 350, note_name: G },
-        '{note_x: 120, note_y: 354, note_name: F },
-        '{note_x: 200, note_y: 357, note_name: E },
-        '{note_x: 280, note_y: 354, note_name: F },
-        '{note_x: 360, note_y: 357, note_name: E },
-        '{note_x: 440, note_y: 364, note_name: C },
-        '{note_x: 520, note_y: 354, note_name: F },
-        '{note_x: 600, note_y: 340, note_name: C1 },
+        '{note_x:  30, note_y: 198, note_name: G },
+        '{note_x:  90, note_y: 200, note_name: F },
+        '{note_x: 150, note_y: 202, note_name: E },
+        '{note_x: 210, note_y: 200, note_name: F },
+        '{note_x: 270, note_y: 202, note_name: E },
+        '{note_x: 330, note_y: 206, note_name: C },
+        '{note_x: 390, note_y: 200, note_name: F },
+        '{note_x: 450, note_y: 193, note_name: C },
         //8
-        '{note_x:  40, note_y: 410, note_name: E },
-        '{note_x: 120, note_y: 403, note_name: G },
-        '{note_x: 200, note_y: 414, note_name: D },
-        '{note_x: 280, note_y: 417, note_name: C },
-        '{note_x: 360, note_y: 414, note_name: D },
-        '{note_x: 440, note_y: 410, note_name: E },
-        '{note_x: 520, note_y: 403, note_name: G },
-        '{note_x: 600, note_y: 414, note_name: D },
+        '{note_x:  30, note_y: 232, note_name: E },
+        '{note_x:  90, note_y: 228, note_name: G },
+        '{note_x: 150, note_y: 234, note_name: D },
+        '{note_x: 210, note_y: 236, note_name: C },
+        '{note_x: 270, note_y: 234, note_name: D },
+        '{note_x: 330, note_y: 232, note_name: E },
+        '{note_x: 390, note_y: 228, note_name: G },
+        '{note_x: 450, note_y: 234, note_name: D },
         //5
-        '{note_x:  40, note_y: 463, note_name: E },
-        '{note_x: 120, note_y: 456, note_name: G },
-        '{note_x: 200, note_y: 442, note_name: D1 },
-        '{note_x: 280, note_y: 446, note_name: C1 },
-        '{note_x: 360, note_y: 456, note_name: G }
+        '{note_x:  30, note_y: 262, note_name: E },
+        '{note_x:  90, note_y: 258, note_name: G },
+        '{note_x: 150, note_y: 250, note_name: D },
+        '{note_x: 210, note_y: 253, note_name: C },
+        '{note_x: 270, note_y: 258, note_name: G }
     };
 
-    function logic is_in_circle(
-        input int pixel_x,    
-        input int pixel_y,    
-        input int circle_cx,  
-        input int circle_cy,  
-        input int radius     
-    );
-        int dx = pixel_x - circle_cx;
-        int dy = pixel_y - circle_cy;
-        int r_squared = radius * radius;
-        is_in_circle = (dx * dx + dy * dy) <= r_squared;
-    endfunction
+    logic [5:0] counterForNotes;
 
     always_ff @(posedge clk) begin
+
         red   <= 0;
         green <= 0;
         blue  <= 0;
-        
-
-        if ( y == 15  || y == 22  || y == 29  || y == 36  || y == 43  ||
-             y == 68  || y == 75  || y == 82  || y == 89  || y == 96  ||
-             y == 121 || y == 128 || y == 135 || y == 142 || y == 149 ||
-             y == 174 || y == 181 || y == 188 || y == 195 || y == 202 ||
-             y == 227 || y == 234 || y == 241 || y == 248 || y == 255 ||
-             y == 280 || y == 287 || y == 294 || y == 301 || y == 308 ||
-             y == 333 || y == 340 || y == 347 || y == 354 || y == 361 ||
-             y == 386 || y == 393 || y == 400 || y == 407 || y == 414 ||
-             y == 439 || y == 446 || y == 453 || y == 460 || y == 467 )
+        //i could make this into for loop but i kinda like how awful it looks
+        if ( y == 9 || y == 12 || y == 16 || y == 20 || y == 24 ||
+             y == 39  || y == 42  || y == 46  || y == 50  || y == 54 ||
+             y == 68  || y == 72  || y == 76  || y == 80  || y == 84 ||
+             y == 99  || y == 103 || y == 106 || y == 110 || y == 114 ||
+             y == 129 || y == 133 || y == 137 || y == 141 || y == 144 ||
+             y == 159 || y == 163 || y == 167 || y == 171 || y == 174 ||
+             y == 189 || y == 193 || y == 197 || y == 201 || y == 205 ||
+             y == 220 || y == 224 || y == 228 || y == 232 || y == 236 ||
+             y == 248 || y == 252 || y == 256 || y == 260 || y == 264)
         begin
-            red   <= 32;
-            green <= 32;
+            red   <= 100;
+            green <= 100;
+            blue  <= 100;
         end
 
-        for (int i = 0; i < note_count; i++) begin
-            if (is_in_circle(x, y, notes[i].note_x, notes[i].note_y, 4)) begin
-                if (game_active && i == note_index) begin
-                    if (show_success)
-                        red <= 0;
-                    else if (show_failure)
-                        green <= 0;
-                end else begin
-                    red <= 32;
-                    green <= 32;
-                end
-            end
+        for (int i = 0; i < note_count; i++)
+        begin
+            if ((x - notes[i].note_x)*(x - notes[i].note_x) < 9 &&
+                (y - notes[i].note_y)*(y - notes[i].note_y) < 9)
+                begin
+                    red <= 255;
+                    green <= 255;
+                    blue <= 0;
+                    if (game_active && i == note_index) begin
+                        if (show_success)
+                            red <= 0;
+                        else if (show_failure)
+                            green <= 0;
+                    end
+                end    
         end
-            
-    end
-    
+end    
+
+
 //Game
     typedef enum logic [1:0] {
         IDLE,
@@ -455,32 +474,41 @@ module lab_top
             show_success <= 0;
             show_failure <= 0;
         end else begin
-            case (game_state)
-
-                IDLE: begin
-                    show_success <= 0;
-                    show_failure <= 0;
-                    if (key_pressed) begin
-                        game_active <= 1;
-                        game_state <= PLAYING;
-                        note_index <= 0;
-                    end
+            if (game_state == IDLE)
+             begin
+                show_success <= 0;
+                show_failure <= 0;
+                if (key_pressed) begin
+                    game_active <= 1;
+                    game_state <= PLAYING;
+                    note_index <= 0;
                 end
+             end
 
-                PLAYING: begin
-                    if (key_pressed) begin
+             else if (game_state == PLAYING)
+             begin
+                    if (key_pressed)
+                    begin
                         game_state <= IDLE;
                         game_active <= 0;
-                    end else if (t_note != no_note) begin
-                        if (t_note == notes[note_index].note_name) begin
+                    end
+                    else if (t_note != no_note)
+                    begin
+                        if (t_note == notes[note_index].note_name)
+                        begin
                             show_success <= 1;
                             show_failure <= 0;
-                            if (note_index == note_count - 1) begin
+                            if (note_index == note_count - 1)
+                            begin
                                 game_state <= WIN;
-                            end else begin
+                            end 
+                            else
+                            begin
                                 note_index <= note_index + 1;
                             end
-                        end else begin
+                        end
+                        else
+                        begin
                             show_success <= 0;
                             show_failure <= 1;
                             game_state <= FAIL;
@@ -488,20 +516,21 @@ module lab_top
                     end
                 end
 
-                FAIL: begin
+                else if (game_state == FAIL)
+                begin
                     note_index <= 0;
                     if (key_pressed) begin
                      game_state <= IDLE;
                     end
                 end
 
-                WIN: begin
+                else if (game_state == WIN)
+                begin
                     if (key_pressed) begin
                          game_state <= IDLE;
                     end
                 end
 
-            endcase
         end
     end
 
