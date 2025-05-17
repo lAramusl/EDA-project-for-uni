@@ -162,6 +162,18 @@ module lab_top
 
     // Custom measured frequencies
 
+    // localparam freq_100_C   = 52325,
+    //            freq_100_Cs  = 55437,
+    //            freq_100_D   = 58733,
+    //            freq_100_Ds  = 62225,
+    //            freq_100_E   = 65926,
+    //            freq_100_F   = 69846,
+    //            freq_100_Fs  = 73999,
+    //            freq_100_G   = 78399,
+    //            freq_100_Gs  = 83061,
+    //            freq_100_A   = 88000,
+    //            freq_100_As  = 93233,
+    //            freq_100_B   = 98777;
     localparam freq_100_C  = 26163,
                freq_100_Cs = 27718,
                freq_100_D  = 29366,
@@ -314,6 +326,12 @@ module lab_top
     //
     //------------------------------------------------------------------------
 
+    typedef enum logic [1:0] {
+        CORRECT = 2'd0,
+        WRONG   = 2'd1,
+        NONE    = 2'd2
+    } NoteState_t;
+     
  
     typedef struct packed {
         logic [9:0] note_x;
@@ -323,90 +341,116 @@ module lab_top
 
     localparam int note_count = 62;
 
+    NoteData_t notes [note_count];
 
-   NoteData_t notes [note_count] =
-    '{
-        //8
-        '{note_x:  30, note_y:  22, note_name: E },
-        '{note_x:  90, note_y:  18, note_name: G },
-        '{note_x: 150, note_y:  24, note_name: D },
-        '{note_x: 210, note_y:  26, note_name: C },
-        '{note_x: 270, note_y:  24, note_name: D },
-        '{note_x: 330, note_y:  22, note_name: E },
-        '{note_x: 390, note_y:  18, note_name: G },
-        '{note_x: 450, note_y:  24, note_name: D },
-        //8
-        '{note_x:  30, note_y:  52, note_name: E },
-        '{note_x:  90, note_y:  48, note_name: G },
-        '{note_x: 150, note_y:  40, note_name: D },
-        '{note_x: 210, note_y:  42, note_name: C },
-        '{note_x: 270, note_y:  48, note_name: G },
-        '{note_x: 330, note_y:  50, note_name: F },
-        '{note_x: 390, note_y:  52, note_name: E },
-        '{note_x: 450, note_y:  54, note_name: D },
-        //8
-        '{note_x:  30, note_y:  82, note_name: E },
-        '{note_x:  90, note_y:  78, note_name: G },
-        '{note_x: 150, note_y:  84, note_name: D },
-        '{note_x: 210, note_y:  86, note_name: C },
-        '{note_x: 270, note_y:  84, note_name: D },
-        '{note_x: 330, note_y:  82, note_name: E },
-        '{note_x: 390, note_y:  78, note_name: G },
-        '{note_x: 450, note_y:  84, note_name: D },
-        //5
-        '{note_x:  30, note_y: 112, note_name: E },
-        '{note_x:  90, note_y: 108, note_name: G },
-        '{note_x: 150, note_y: 100, note_name: D },
-        '{note_x: 210, note_y: 102, note_name: C },
-        '{note_x: 270, note_y: 108, note_name: G },
-        //6
-        '{note_x:  30, note_y: 138, note_name: G },
-        '{note_x:  90, note_y: 140, note_name: F },
-        '{note_x: 150, note_y: 142, note_name: E },
-        '{note_x: 210, note_y: 140, note_name: F },
-        '{note_x: 270, note_y: 142, note_name: E },
-        '{note_x: 330, note_y: 146, note_name: C },
-        //6
-        '{note_x:  30, note_y: 171, note_name: F },
-        '{note_x:  90, note_y: 172, note_name: E },
-        '{note_x: 150, note_y: 174, note_name: D },
-        '{note_x: 210, note_y: 172, note_name: E },
-        '{note_x: 270, note_y: 174, note_name: D },
-        '{note_x: 330, note_y: 179, note_name: A },
-        //8
-        '{note_x:  30, note_y: 198, note_name: G },
-        '{note_x:  90, note_y: 200, note_name: F },
-        '{note_x: 150, note_y: 202, note_name: E },
-        '{note_x: 210, note_y: 200, note_name: F },
-        '{note_x: 270, note_y: 202, note_name: E },
-        '{note_x: 330, note_y: 206, note_name: C },
-        '{note_x: 390, note_y: 200, note_name: F },
-        '{note_x: 450, note_y: 193, note_name: C },
-        //8
-        '{note_x:  30, note_y: 232, note_name: E },
-        '{note_x:  90, note_y: 228, note_name: G },
-        '{note_x: 150, note_y: 234, note_name: D },
-        '{note_x: 210, note_y: 236, note_name: C },
-        '{note_x: 270, note_y: 234, note_name: D },
-        '{note_x: 330, note_y: 232, note_name: E },
-        '{note_x: 390, note_y: 228, note_name: G },
-        '{note_x: 450, note_y: 234, note_name: D },
-        //5
-        '{note_x:  30, note_y: 262, note_name: E },
-        '{note_x:  90, note_y: 258, note_name: G },
-        '{note_x: 150, note_y: 250, note_name: D },
-        '{note_x: 210, note_y: 253, note_name: C },
-        '{note_x: 270, note_y: 258, note_name: G }
-    };
+    NoteState_t note_states[note_count];
 
-    logic [5:0] counterForNotes;
+    initial begin
+    for (int i = 0; i < note_count; i++)
+        note_states[i] = NONE;
+    end
 
-    always_ff @(posedge clk) begin
 
-        red   <= 0;
-        green <= 0;
-        blue  <= 0;
-        //i could make this into for loop but i kinda like how awful it looks
+    initial
+    begin
+        notes[0]  = '{note_x:  30, note_y:  22, note_name: E};
+        notes[1]  = '{note_x:  90, note_y:  18, note_name: G};
+        notes[2]  = '{note_x: 150, note_y:  24, note_name: D};
+        notes[3]  = '{note_x: 210, note_y:  26, note_name: C};
+        notes[4]  = '{note_x: 270, note_y:  24, note_name: D};
+        notes[5]  = '{note_x: 330, note_y:  22, note_name: E};
+        notes[6]  = '{note_x: 390, note_y:  18, note_name: G};
+        notes[7]  = '{note_x: 450, note_y:  24, note_name: D};
+        notes[8]  = '{note_x:  30, note_y:  52, note_name: E};
+        notes[9]  = '{note_x:  90, note_y:  48, note_name: G};
+        notes[10] = '{note_x: 150, note_y:  40, note_name: D};
+        notes[11] = '{note_x: 210, note_y:  42, note_name: C};
+        notes[12] = '{note_x: 270, note_y:  48, note_name: G};
+        notes[13] = '{note_x: 330, note_y:  50, note_name: F};
+        notes[14] = '{note_x: 390, note_y:  52, note_name: E};
+        notes[15] = '{note_x: 450, note_y:  54, note_name: D};
+        notes[16] = '{note_x:  30, note_y:  82, note_name: E};
+        notes[17] = '{note_x:  90, note_y:  78, note_name: G};
+        notes[18] = '{note_x: 150, note_y:  84, note_name: D};
+        notes[19] = '{note_x: 210, note_y:  86, note_name: C};
+        notes[20] = '{note_x: 270, note_y:  84, note_name: D};
+        notes[21] = '{note_x: 330, note_y:  82, note_name: E};
+        notes[22] = '{note_x: 390, note_y:  78, note_name: G};
+        notes[23] = '{note_x: 450, note_y:  84, note_name: D};
+        notes[24] = '{note_x:  30, note_y: 112, note_name: E};
+        notes[25] = '{note_x:  90, note_y: 108, note_name: G};
+        notes[26] = '{note_x: 150, note_y: 100, note_name: D};
+        notes[27] = '{note_x: 210, note_y: 102, note_name: C};
+        notes[28] = '{note_x: 270, note_y: 108, note_name: G};
+        notes[29] = '{note_x:  30, note_y: 138, note_name: G};
+        notes[30] = '{note_x:  90, note_y: 140, note_name: F};
+        notes[31] = '{note_x: 150, note_y: 142, note_name: E};
+        notes[32] = '{note_x: 210, note_y: 140, note_name: F};
+        notes[33] = '{note_x: 270, note_y: 142, note_name: E};
+        notes[34] = '{note_x: 330, note_y: 146, note_name: C};
+        notes[35] = '{note_x:  30, note_y: 171, note_name: F};
+        notes[36] = '{note_x:  90, note_y: 172, note_name: E};
+        notes[37] = '{note_x: 150, note_y: 174, note_name: D};
+        notes[38] = '{note_x: 210, note_y: 172, note_name: E};
+        notes[39] = '{note_x: 270, note_y: 174, note_name: D};
+        notes[40] = '{note_x: 330, note_y: 179, note_name: A};
+        notes[41] = '{note_x:  30, note_y: 198, note_name: G};
+        notes[42] = '{note_x:  90, note_y: 200, note_name: F};
+        notes[43] = '{note_x: 150, note_y: 202, note_name: E};
+        notes[44] = '{note_x: 210, note_y: 200, note_name: F};
+        notes[45] = '{note_x: 270, note_y: 202, note_name: E};
+        notes[46] = '{note_x: 330, note_y: 206, note_name: C};
+        notes[47] = '{note_x: 390, note_y: 200, note_name: F};
+        notes[48] = '{note_x: 450, note_y: 193, note_name: C};
+        notes[49] = '{note_x:  30, note_y: 232, note_name: E};
+        notes[50] = '{note_x:  90, note_y: 228, note_name: G};
+        notes[51] = '{note_x: 150, note_y: 234, note_name: D};
+        notes[52] = '{note_x: 210, note_y: 236, note_name: C};
+        notes[53] = '{note_x: 270, note_y: 234, note_name: D};
+        notes[54] = '{note_x: 330, note_y: 232, note_name: E};
+        notes[55] = '{note_x: 390, note_y: 228, note_name: G};
+        notes[56] = '{note_x: 450, note_y: 234, note_name: D};
+        notes[57] = '{note_x:  30, note_y: 262, note_name: E};
+        notes[58] = '{note_x:  90, note_y: 258, note_name: G};
+        notes[59] = '{note_x: 150, note_y: 250, note_name: D};
+        notes[60] = '{note_x: 210, note_y: 253, note_name: C};
+        notes[61] = '{note_x: 270, note_y: 258, note_name: G};
+    end
+
+    typedef enum logic [1:0] {
+        IDLE,
+        PLAYING,
+        WIN,
+        FAIL
+    } GameState;
+
+    GameState game_state;
+
+    logic [7:0] note_index;
+    logic game_active;
+    logic prev_key, key_pressed;
+    logic [w_note - 1:0] current_note;
+
+    always_ff @(posedge clk or posedge rst)
+    begin
+        if(rst)
+        begin
+            prev_key <= 0;
+            key_pressed <= 0;
+        end
+        else
+        begin
+            prev_key <= key[0];
+            key_pressed <= ~prev_key & key[0];
+        end
+    end
+   
+    always_comb
+    begin
+        red   = 0;
+        green = 0;
+        blue  = 0;
+
         if ( y == 9 || y == 12 || y == 16 || y == 20 || y == 24 ||
              y == 39  || y == 42  || y == 46  || y == 50  || y == 54 ||
              y == 68  || y == 72  || y == 76  || y == 80  || y == 84 ||
@@ -417,122 +461,78 @@ module lab_top
              y == 220 || y == 224 || y == 228 || y == 232 || y == 236 ||
              y == 248 || y == 252 || y == 256 || y == 260 || y == 264)
         begin
-            red   <= 100;
-            green <= 100;
-            blue  <= 100;
+            red   = 100;
+            green = 100;
+            blue  = 0;
         end
 
-        for (int i = 0; i < note_count; i++)
-        begin
-            if ((x - notes[i].note_x)*(x - notes[i].note_x) < 9 &&
-                (y - notes[i].note_y)*(y - notes[i].note_y) < 9)
-                begin
-                    red <= 255;
-                    green <= 255;
-                    blue <= 0;
-                    if (game_active && i == note_index) begin
-                        if (show_success)
-                            red <= 0;
-                        else if (show_failure)
-                            green <= 0;
-                    end
-                end    
-        end
-end    
+        for (int i = 0; i < note_count; i++) begin
+            if ((x - notes[i].note_x)*(x - notes[i].note_x) <= 9 &&
+                (y - notes[i].note_y)*(y - notes[i].note_y) <= 4)
+                 begin
 
+                red = 255;
+                green = 255;
+                blue = 0;
 
-//Game
-    typedef enum logic [1:0] {
-        IDLE,
-        PLAYING,
-        WIN,
-        FAIL
-    } GameState;
-
-    GameState game_state;
-
-    logic [6:0] note_index;
-    logic game_active;
-    logic prev_key, key_pressed;
-    logic show_success, show_failure;
-
-    always_ff @(posedge clk or posedge rst) begin
-        if (rst) begin
-            prev_key     <= 0;
-            key_pressed  <= 0;
-        end else begin
-            prev_key     <= key[0];
-            key_pressed  <= ~prev_key & key[0];
+                case (note_states[i])
+                    CORRECT: begin red = 0;   green = 255; blue = 0; end
+                    WRONG:   begin red = 255; green = 0;   blue = 0; end
+                    default: ;
+                endcase
+            end
         end
     end
 
-    always_ff @(posedge clk or posedge rst) begin
-        if (rst) begin
-            game_state   <= IDLE;
-            note_index   <= 0;
-            game_active  <= 0;
-            show_success <= 0;
-            show_failure <= 0;
-        end else begin
-            if (game_state == IDLE)
-             begin
-                show_success <= 0;
-                show_failure <= 0;
+
+
+always_ff @(posedge clk or posedge rst)
+begin
+    if (rst) begin
+        game_state    <= IDLE;
+        note_index    <= 0;
+        current_note  <= no_note;
+        for (int i = 0; i < note_count; i++) begin
+            notes[i].note_state <= NONE;
+        end
+    end else begin
+        case (game_state)
+            IDLE: begin
                 if (key_pressed) begin
-                    game_active <= 1;
-                    game_state <= PLAYING;
-                    note_index <= 0;
+                    game_state  <= PLAYING;
+                    note_index  <= 0;
                 end
-             end
-
-             else if (game_state == PLAYING)
-             begin
-                    if (key_pressed)
-                    begin
-                        game_state <= IDLE;
-                        game_active <= 0;
-                    end
-                    else if (t_note != no_note)
-                    begin
-                        if (t_note == notes[note_index].note_name)
-                        begin
-                            show_success <= 1;
-                            show_failure <= 0;
-                            if (note_index == note_count - 1)
-                            begin
-                                game_state <= WIN;
-                            end 
-                            else
-                            begin
-                                note_index <= note_index + 1;
-                            end
-                        end
+            end
+            PLAYING: begin
+                current_note <= t_note;
+                if (key_pressed) begin
+                    game_state <= IDLE;
+                    note_index <= 0;
+                end else if (current_note != no_note) begin
+                    if (current_note == notes[note_index].note_name) begin
+                        notes[note_index].note_state <= CORRECT;
+                        if (note_index == note_count - 1)
+                            game_state <= WIN;
                         else
-                        begin
-                            show_success <= 0;
-                            show_failure <= 1;
-                            game_state <= FAIL;
-                        end
+                            note_index <= note_index + 1;
+                    end else begin
+                        notes[note_index].note_state <= WRONG;
+                        game_state <= FAIL;
                     end
                 end
-
-                else if (game_state == FAIL)
-                begin
+            end
+            WIN, FAIL: begin
+                if (key_pressed) begin
+                    game_state <= IDLE;
                     note_index <= 0;
-                    if (key_pressed) begin
-                     game_state <= IDLE;
-                    end
                 end
-
-                else if (game_state == WIN)
-                begin
-                    if (key_pressed) begin
-                         game_state <= IDLE;
-                    end
-                end
-
-        end
+            end
+        endcase
     end
+end
 
+
+
+    
 
 endmodule
