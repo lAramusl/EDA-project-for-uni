@@ -485,54 +485,72 @@ module lab_top
     end
 
 
+    logic [26:0] clk_counter; 
+    logic note_check_ready;
 
-always_ff @(posedge clk or posedge rst)
-begin
-    if (rst) begin
-        game_state    <= IDLE;
-        note_index    <= 0;
-        current_note  <= no_note;
-        for (int i = 0; i < note_count; i++) begin
-            notes[i].note_state <= NONE;
-        end
-    end else begin
-        case (game_state)
-            IDLE: begin
-                if (key_pressed) begin
-                    game_state  <= PLAYING;
-                    note_index  <= 0;
+    always_ff @(posedge clk or posedge rst) begin
+        if (rst) begin
+            clk_counter      <= 0;
+            note_check_ready <= 0;
+        end else begin
+            if (game_state == PLAYING) begin
+                if (clk_counter < 27'd100_000_000) begin  // checks every 2 sec
+                    clk_counter      <= clk_counter + 1;
+                    note_check_ready <= 0;
+                end else begin
+                    clk_counter      <= 0;
+                    note_check_ready <= 1;
                 end
+            end else begin
+                clk_counter      <= 0;
+                note_check_ready <= 0;
             end
-            PLAYING: begin
-                current_note <= t_note;
-                if (key_pressed) begin
-                    game_state <= IDLE;
-                    note_index <= 0;
-                end else if (current_note != no_note) begin
-                    if (current_note == notes[note_index].note_name) begin
-                        notes[note_index].note_state <= CORRECT;
-                        if (note_index == note_count - 1)
-                            game_state <= WIN;
-                        else
-                            note_index <= note_index + 1;
-                    end else begin
-                        notes[note_index].note_state <= WRONG;
-                        game_state <= FAIL;
+        end
+    end
+
+    always_ff @(posedge clk or posedge rst)
+    begin
+        if (rst) begin
+            game_state    <= IDLE;
+            note_index    <= 0;
+            current_note  <= no_note;
+            for (int i = 0; i < note_count; i++) begin
+                note_states[i] <= NONE;
+            end
+        end else begin
+            case (game_state)
+                IDLE: begin
+                    if (key_pressed) begin
+                        game_state  <= PLAYING;
+                        note_index  <= 0;
                     end
                 end
-            end
-            WIN, FAIL: begin
-                if (key_pressed) begin
-                    game_state <= IDLE;
-                    note_index <= 0;
+                PLAYING: begin
+                    current_note <= t_note;
+                    if (key_pressed) begin
+                        game_state <= IDLE;
+                        note_index <= 0;
+                    end
+                    else if (note_check_ready && current_note != no_note) begin
+                        if (current_note == notes[note_index].note_name) begin
+                            note_states[note_index] <= CORRECT;
+                            if (note_index == note_count - 1)
+                                game_state <= WIN;
+                            else
+                                note_index <= note_index + 1;
+                        end else begin
+                            note_states[note_index] <= WRONG;
+                            game_state <= FAIL;
+                        end
+                    end
                 end
-            end
-        endcase
+                WIN, FAIL: begin
+                    if (key_pressed) begin
+                        game_state <= IDLE;
+                        note_index <= 0;
+                    end
+                end
+            endcase
+        end
     end
-end
-
-
-
-    
-
 endmodule
